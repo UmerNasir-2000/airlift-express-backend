@@ -7,8 +7,10 @@ export class AppController {
 
   @Get()
   async getHello(): Promise<string> {
-    const value = await this.cacheManager.get('key');
-    if(value)
+    const value = await this.cacheManager.get('hello');
+    if (value) return value;
+
+    await this.cacheManager.set('hello', 'heeloworld');
     return 'Hello, World!';
   }
 }
