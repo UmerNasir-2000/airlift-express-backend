@@ -13,9 +13,9 @@ function logger (app: INestApplication) {
 
     const globalLogger = new NestjsWinstonLoggerService({
         format: format.combine(
-        format.timestamp({ format: "isoDateTime" }),
-        format.json(),
-        format.colorize({ all: true }),
+            format.timestamp({ format: "isoDateTime" }),
+            format.json(),
+            format.colorize({ all: true }),
         ),
         transports: [
         new transports.File({ filename: "error.log", level: "error" }),
