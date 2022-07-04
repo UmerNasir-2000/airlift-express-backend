@@ -22,10 +22,9 @@ model Modules {
   name             String
   imageUrl         String          @map("image_url")
   createdAt        DateTime        @default(now()) @map("created_at")
-  classification   Classifications @relation(fields: [classificationId], references: [id])
+  classification   Classifications @relation(fields: [ classificationId ], references: [ id ])
   classificationId Int
   categories Categories[]
-
 
   @@map("modules")
 }
@@ -36,8 +35,41 @@ model Categories {
   name             String
   imageUrl         String          @map("image_url")
   createdAt        DateTime        @default(now()) @map("created_at")
-  modules          Modules @relation(fields: [moduleId], references: [id])
+  modules          Modules         @relation(fields: [ moduleId ], references: [ id ])
   moduleId         Int
-  
+  subCategories    SubCategories[]
+
   @@map("categories")
 }
+
+model SubCategories {
+  id               Int             @id @default(autoincrement())
+  name             String
+  imageUrl         String          @map("image_url")
+  createdAt        DateTime        @default(now()) @map("created_at")
+  categories       Categories      @relation(fields: [ categoryId ], references: [ id ])
+  categoryId       Int
+  products         Products[]
+  
+  @@map("sub_categories")
+}
+
+model Products {
+  id               Int             @id @default(autoincrement())
+  name             String
+  description      String          @map("image_url")
+  isImported       Boolean         @default(false) @map("is_imported")
+  isDisplay        Boolean         @default(false) @map("is_display")
+  subCategories    SubCategories   @relation(fields: [ subCategoryId ], references: [ id ])
+  subCategoryId    Int
+  
+  @@map("products")
+}
+
+
+
+
+
+
+
+
