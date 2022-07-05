@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class ClassificationService {
+  
   constructor(private readonly prismaService: PrismaService) {}
 
   async fetchClassifications() {
