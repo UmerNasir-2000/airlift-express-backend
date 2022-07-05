@@ -19,7 +19,7 @@ model Classifications {
 }
 
 model Modules {
-  id               Int             @id @default(autoincrement())
+  id               String          @id @default(uuid())
   name             String          @db.VarChar(255)
   imageUrl         String          @db.Text @map("image_url")
   createdAt        DateTime        @default(now()) @map("created_at")
@@ -39,14 +39,14 @@ model Categories {
   createdAt        DateTime        @default(now()) @map("created_at")
   isActive         Boolean         @default(true) @map("is_active")
   modules          Modules         @relation(fields: [ moduleId ], references: [ id ])
-  moduleId         Int
+  moduleId         String
   subCategories    SubCategories[]
 
   @@map("categories")
 }
 
 model SubCategories {
-  id               Int             @id @default(autoincrement())
+  id               String          @id @default(uuid())
   name             String          @db.VarChar(255)
   imageUrl         String          @db.Text @map("image_url")
   createdAt        DateTime        @default(now()) @map("created_at")
@@ -59,20 +59,20 @@ model SubCategories {
 }
 
 model Products {
-  id               Int             @id @default(autoincrement())
+  id               String          @id @default(uuid())
   name             String          @db.VarChar(255) 
   description      String          @db.Text @map("image_url")
   isImported       Boolean         @default(false) @map("is_imported")
   isDisplay        Boolean         @default(false) @map("is_display")
   subCategories    SubCategories   @relation(fields: [ subCategoryId ], references: [ id ])
-  subCategoryId    Int
+  subCategoryId    String
   productVariants  ProductVariants[]
   
   @@map("products")
 }
 
 model ProductVariants {
-  id                  Int             @id @default(autoincrement())
+  id                  String          @id @default(uuid())
   price               Float     
   airliftCurrency     Float           @map("airlift_currency")
   discountPercentage  Float           @map("discount_percentage")
@@ -82,7 +82,7 @@ model ProductVariants {
   demand              Demand          @default(LOW)
   quantity            Int             @default(0)
   products            Products        @relation(fields: [ productId ], references: [ id ])
-  productId           Int
+  productId           String
   ProductImages       ProductImages[]
   
   @@map("product_variants")
@@ -90,21 +90,12 @@ model ProductVariants {
 
 
 model ProductImages {
-  id                  Int             @id @default(autoincrement())
+  id                  String          @id @default(uuid())
   imageUrl            String          @db.Text @map("image_url")
   productVariants     ProductVariants @relation(fields: [ productVariantId ], references: [ id ])
-  productVariantId    Int          
+  productVariantId    String          
   
   @@map("product_images")
-}
-
-model Dummy {
-  id                  String          @id @default(cuid())
-  text                String          @db.Text @map("image_url")
-  // productVariants     ProductVariants @relation(fields: [ productVariantId ], references: [ id ])
-  // productVariantId    Int          
-  
-  @@map("dummy")
 }
 
 enum Status {
