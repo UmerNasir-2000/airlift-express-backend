@@ -6,6 +6,7 @@ export class ClassificationService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async fetchClassifications() {
-    return await this.prismaService.classification.findMany();
+    return await this.prismaService.classifications.findMany();
   }
+  
 }

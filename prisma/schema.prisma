@@ -8,10 +8,112 @@ datasource db {
 }
 
 model Classifications {
-  id        Int      @id @default(autoincrement())
-  name      String
-  isActive  Boolean  @default(true) @map("is_active")
-  createdAt DateTime @default(now()) @map("created_at")
+  id        String      @id  @default(uuid())
+  name      String      @db.VarChar(255)
+  imageUrl  String      @db.Text @map("image_url")
+  isActive  Boolean     @default(true) @map("is_active")
+  createdAt DateTime    @default(now()) @map("created_at")
+  modules   Modules[] 
 
   @@map("classifications")
 }
+
+model Modules {
+  id               String          @id @default(uuid())
+  name             String          @db.VarChar(255)
+  imageUrl         String          @db.Text @map("image_url")
+  createdAt        DateTime        @default(now()) @map("created_at")
+  isActive         Boolean         @default(true) @map("is_active")
+  classification   Classifications @relation(fields: [ classificationId ], references: [ id ])
+  classificationId String            
+  categories Categories[]
+
+  @@map("modules")
+}
+
+
+model Categories {
+  id               String          @id @default(uuid())
+  name             String          @db.VarChar(255)
+  imageUrl         String          @db.Text @map("image_url")
+  createdAt        DateTime        @default(now()) @map("created_at")
+  isActive         Boolean         @default(true) @map("is_active")
+  modules          Modules         @relation(fields: [ moduleId ], references: [ id ])
+  moduleId         String
+  subCategories    SubCategories[]
+
+  @@map("categories")
+}
+
+model SubCategories {
+  id               String          @id @default(uuid())
+  name             String          @db.VarChar(255)
+  imageUrl         String          @db.Text @map("image_url")
+  createdAt        DateTime        @default(now()) @map("created_at")
+  isActive         Boolean         @default(true) @map("is_active")
+  categories       Categories      @relation(fields: [ categoryId ], references: [ id ])
+  categoryId       String
+  products         Products[]
+  
+  @@map("sub_categories")
+}
+
+model Products {
+  id               String          @id @default(uuid())
+  name             String          @db.VarChar(255) 
+  description      String          @db.Text @map("image_url")
+  isImported       Boolean         @default(false) @map("is_imported")
+  isDisplay        Boolean         @default(false) @map("is_display")
+  subCategories    SubCategories   @relation(fields: [ subCategoryId ], references: [ id ])
+  subCategoryId    String
+  productVariants  ProductVariants[]
+  
+  @@map("products")
+}
+
+model ProductVariants {
+  id                  String          @id @default(uuid())
+  price               Float     
+  airliftCurrency     Float           @map("airlift_currency")
+  discountPercentage  Float           @map("discount_percentage")
+  imageUrl            String          @db.Text @map("image_url")
+  variant             String          @db.VarChar(255)
+  status              Status          @default(VARIANT)          
+  demand              Demand          @default(LOW)
+  quantity            Int             @default(0)
+  products            Products        @relation(fields: [ productId ], references: [ id ])
+  productId           String
+  ProductImages       ProductImages[]
+  
+  @@map("product_variants")
+}
+
+
+model ProductImages {
+  id                  String          @id @default(uuid())
+  imageUrl            String          @db.Text @map("image_url")
+  productVariants     ProductVariants @relation(fields: [ productVariantId ], references: [ id ])
+  productVariantId    String          
+  
+  @@map("product_images")
+}
+
+enum Status {
+  MAIN
+  HIDE
+  VARIANT
+}
+
+enum Demand {
+  HIGH
+  LOW
+  MEDIUM
+}
+
+
+
+
+
+
+
+
