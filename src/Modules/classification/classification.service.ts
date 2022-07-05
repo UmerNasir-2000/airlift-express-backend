@@ -11,6 +11,9 @@ export class ClassificationService {
       where: {
         isActive: true
       },
+      orderBy: {
+        createdAt: 'asc'
+      }
     });
 
   }
