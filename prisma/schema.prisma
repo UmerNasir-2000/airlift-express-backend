@@ -26,11 +26,10 @@ model Modules {
   isActive         Boolean         @default(true) @map("is_active")
   classification   Classifications @relation(fields: [ classificationId ], references: [ id ])
   classificationId String            
-  categories Categories[]
+  categories       Categories[]
 
   @@map("modules")
 }
-
 
 model Categories {
   id               String          @id @default(uuid())
@@ -88,7 +87,6 @@ model ProductVariants {
   @@map("product_variants")
 }
 
-
 model ProductImages {
   id                  String          @id @default(uuid())
   imageUrl            String          @db.Text @map("image_url")
@@ -109,11 +107,3 @@ enum Demand {
   LOW
   MEDIUM
 }
-
-
-
-
-
-
-
-
