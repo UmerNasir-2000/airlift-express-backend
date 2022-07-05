@@ -10,7 +10,7 @@ export class AppController {
     const value = await this.cacheManager.get('hello');
     if (value) return value;
 
-    await this.cacheManager.set('hello', 'heeloworld');
+    await this.cacheManager.set('hello', 'heeloworld', { ttl: 0 });
     return 'Hello, World!';
   }
 }
