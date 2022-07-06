@@ -33,6 +33,7 @@
     "cache-manager": "^4.0.1",
     "cache-manager-redis-store": "^2.0.0",
     "nestjs-winston-logger": "^1.1.11",
+    "pg": "^8.7.3",
     "redis": "^3",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",

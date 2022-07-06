@@ -8,11 +8,9 @@ import { ClassificationModule } from './Modules/classification/classification.mo
   imports: [
     CacheModule.register<ClientOpts>({
       store: redisStore,
-
-      // Store-specific configuration:
-      host: 'redis-13047.c13.us-east-1-3.ec2.cloud.redislabs.com',
-      auth_pass: '8nR64FkfEuBAa6scxvNpSEPjZoYl76SG',
-      port: 13047,
+      host: process.env.REDIS_HOST,
+      auth_pass: process.env.REDIS_PASSWORD,
+      port: process.env.REDIS_PORT,
     }),
     ConfigModule.forRoot({
       isGlobal: true,
