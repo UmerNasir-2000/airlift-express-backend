@@ -26,6 +26,8 @@ async function bootstrap() {
 
   app.use(helmet({ xssFilter: true, frameguard: false }));
 
+  app.setGlobalPrefix('api')
+
   logger(app);
 
   await app.listen(process.env.HTTP_PORT);
