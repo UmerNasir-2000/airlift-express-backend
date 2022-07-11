@@ -1,16 +1,9 @@
-import { CACHE_MANAGER, Controller, Get, Inject } from '@nestjs/common';
-import { Cache } from 'cache-manager-redis-store';
+import { Controller, Get } from '@nestjs/common';
 
 @Controller()
 export class AppController {
-  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
-
   @Get()
   async getHello(): Promise<string> {
-    const value = await this.cacheManager.get('hello');
-    if (value) return value;
-
-    await this.cacheManager.set('hello', 'heeloworld', { ttl: 0 });
     return 'Hello, World!';
   }
 }

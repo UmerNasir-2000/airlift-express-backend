@@ -1,13 +1,18 @@
-import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { Cache } from 'cache-manager-redis-store';
+import { RedisService } from '../redis/redis.service';
 
 @Injectable()
 export class ClassificationService {
-  constructor(private readonly prismaService: PrismaService, @Inject(CACHE_MANAGER) private cacheManager: Cache) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly redisService: RedisService,
+  ) {}
 
   async fetchClassifications() {
-    const classificationsRedisResponse = await this.cacheManager.get('classifications');
+    const classificationsRedisResponse = await this.redisService.getRedisKey(
+      'classifications',
+    );
     if (classificationsRedisResponse) return classificationsRedisResponse;
 
     const classifications = await this.prismaService.classifications.findMany({
@@ -19,7 +24,7 @@ export class ClassificationService {
       },
     });
 
-    await this.cacheManager.set('classifications', classifications, { ttl: 0 });
-    return classifications
+    await this.redisService.setRedisKey('classifications', classifications);
+    return classifications;
   }
 }
